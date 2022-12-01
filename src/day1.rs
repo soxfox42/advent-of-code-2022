@@ -1,4 +1,4 @@
-fn group_sums(input: String) -> Vec<i32> {
+fn group_sums(input: &str) -> Vec<i32> {
     return input
         .trim()
         .split("\n\n")
@@ -7,8 +7,13 @@ fn group_sums(input: String) -> Vec<i32> {
         .collect();
 }
 
-pub fn run_a(input: String) {
+pub fn run_a(input: &str) {
     println!("Max: {}", group_sums(input).iter().max().unwrap());
 }
 
-pub fn run_b(_input: String) {}
+pub fn run_b(input: &str) {
+    let mut sums = group_sums(input);
+    sums.sort();
+    sums.reverse();
+    println!("Sum of 3 Max: {}", sums[..3].iter().sum::<i32>());
+}

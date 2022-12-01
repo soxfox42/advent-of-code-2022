@@ -4,21 +4,19 @@ use std::env;
 use std::error::Error;
 use std::fs;
 
-const DAYS: &[(fn(String), fn(String))] = &[(day1::run_a, day1::run_b)];
+const DAYS: &[(fn(&str), fn(&str))] = &[(day1::run_a, day1::run_b)];
 
 fn run_day(i: usize) -> Result<(), Box<dyn Error>> {
     let (run_a, run_b) = DAYS[i - 1];
 
-    let path_a = format!("inputs/day{}a.txt", i);
-    let path_b = format!("inputs/day{}b.txt", i);
-    let input_a = fs::read_to_string(path_a)?;
-    let input_b = fs::read_to_string(path_b)?;
+    let path = format!("inputs/day{}.txt", i);
+    let input = fs::read_to_string(path)?;
 
     println!("Day {}, Part A", i);
-    run_a(input_a);
+    run_a(&input);
     println!();
     println!("Day {}, Part B", i);
-    run_b(input_b);
+    run_b(&input);
     println!();
 
     Ok(())
