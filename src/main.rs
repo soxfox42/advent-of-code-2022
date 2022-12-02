@@ -23,11 +23,14 @@ fn run_day(i: usize) -> Result<(), Box<dyn Error>> {
 }
 
 fn main() {
-    let args = env::args();
+    let mut args = env::args();
 
     if args.len() == 1 {
         for i in 1..=DAYS.len() {
             run_day(i).unwrap();
         }
+    } else {
+        let i = args.nth(1).unwrap().parse().unwrap();
+        run_day(i).unwrap();
     }
 }
