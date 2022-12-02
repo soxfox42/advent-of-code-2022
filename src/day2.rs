@@ -1,10 +1,33 @@
+#[derive(Clone, Copy)]
 enum Shape {
     Rock,
     Paper,
     Scissors,
 }
 
-fn decode_line(line: &str) -> (Shape, Shape) {
+#[derive(Debug)]
+struct ShapeFromIntError;
+
+impl TryFrom<u32> for Shape {
+    type Error = ShapeFromIntError;
+
+    fn try_from(value: u32) -> Result<Self, Self::Error> {
+        match value {
+            0 => Ok(Shape::Rock),
+            1 => Ok(Shape::Paper),
+            2 => Ok(Shape::Scissors),
+            _ => Err(ShapeFromIntError),
+        }
+    }
+}
+
+enum Outcome {
+    Win,
+    Loss,
+    Draw,
+}
+
+fn decode_line_a(line: &str) -> (Shape, Shape) {
     let opponent = match line.chars().nth(0).unwrap() {
         'A' => Shape::Rock,
         'B' => Shape::Paper,
@@ -21,6 +44,31 @@ fn decode_line(line: &str) -> (Shape, Shape) {
     (opponent, you)
 }
 
+fn decode_line_b(line: &str) -> (Shape, Outcome) {
+    let opponent = match line.chars().nth(0).unwrap() {
+        'A' => Shape::Rock,
+        'B' => Shape::Paper,
+        'C' => Shape::Scissors,
+        other => panic!("Unrecognised RPS character {other:?}"),
+    };
+    let outcome = match line.chars().nth(2).unwrap() {
+        'X' => Outcome::Loss,
+        'Y' => Outcome::Draw,
+        'Z' => Outcome::Win,
+        other => panic!("Unrecognised RPS outcome character {other:?}"),
+    };
+
+    (opponent, outcome)
+}
+
+fn finish_round(round: (Shape, Outcome)) -> (Shape, Shape) {
+    match round {
+        (shape, Outcome::Win) => (shape, ((shape as u32 + 1) % 3).try_into().unwrap()),
+        (shape, Outcome::Loss) => (shape, ((shape as u32 + 2) % 3).try_into().unwrap()),
+        (shape, Outcome::Draw) => (shape, shape),
+    }
+}
+
 fn score(round: (Shape, Shape)) -> u32 {
     let opponent = round.0 as u32;
     let you = round.1 as u32;
@@ -35,6 +83,19 @@ fn score(round: (Shape, Shape)) -> u32 {
 }
 
 pub fn run_a(input: &str) {
-    println!("Total Score: {}", input.lines().map(decode_line).map(score).sum::<u32>());
+    println!(
+        "Total Score: {}",
+        input.lines().map(decode_line_a).map(score).sum::<u32>()
+    );
 }
-pub fn run_b(_input: &str) {}
+pub fn run_b(input: &str) {
+    println!(
+        "Total Score: {}",
+        input
+            .lines()
+            .map(decode_line_b)
+            .map(finish_round)
+            .map(score)
+            .sum::<u32>()
+    );
+}
