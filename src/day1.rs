@@ -1,6 +1,5 @@
 fn group_sums(input: &str) -> Vec<i32> {
     return input
-        .trim()
         .split("\n\n")
         .map(|group| group.split("\n").map(|cal| cal.parse::<i32>().unwrap()))
         .map(|group| group.sum::<i32>())

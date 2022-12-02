@@ -1,10 +1,11 @@
 mod day1;
+mod day2;
 
 use std::env;
 use std::error::Error;
 use std::fs;
 
-const DAYS: &[(fn(&str), fn(&str))] = &[(day1::run_a, day1::run_b)];
+const DAYS: &[(fn(&str), fn(&str))] = &[(day1::run_a, day1::run_b), (day2::run_a, day2::run_b)];
 
 fn run_day(i: usize) -> Result<(), Box<dyn Error>> {
     let (run_a, run_b) = DAYS[i - 1];
@@ -13,10 +14,10 @@ fn run_day(i: usize) -> Result<(), Box<dyn Error>> {
     let input = fs::read_to_string(path)?;
 
     println!("Day {}, Part A", i);
-    run_a(&input);
+    run_a(input.trim());
     println!();
     println!("Day {}, Part B", i);
-    run_b(&input);
+    run_b(input.trim());
     println!();
 
     Ok(())
