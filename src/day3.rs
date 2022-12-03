@@ -16,6 +16,12 @@ fn find_common(line: &str) -> char {
     *left_chars.intersection(&right_chars).next().unwrap()
 }
 
+fn find_common_3(lines: &[&str]) -> char {
+    let char_sets: Vec<HashSet<char>> = lines.iter().map(|line| line.chars().collect()).collect();
+    let partial: HashSet<char> = char_sets[0].intersection(&char_sets[1]).cloned().collect();
+    *partial.intersection(&char_sets[2]).next().unwrap()
+}
+
 pub fn run_a(input: &str) {
     println!(
         "Sum of priorities: {}",
@@ -23,4 +29,14 @@ pub fn run_a(input: &str) {
     );
 }
 
-pub fn run_b(_input: &str) {}
+pub fn run_b(input: &str) {
+    let lines: Vec<&str> = input.lines().collect();
+    println!(
+        "Sum of badge priorities: {}",
+        lines
+            .chunks(3)
+            .map(find_common_3)
+            .map(priority)
+            .sum::<u32>()
+    );
+}
