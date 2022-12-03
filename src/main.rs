@@ -1,11 +1,16 @@
 mod day1;
 mod day2;
+mod day3;
 
 use std::env;
 use std::error::Error;
 use std::fs;
 
-const DAYS: &[(fn(&str), fn(&str))] = &[(day1::run_a, day1::run_b), (day2::run_a, day2::run_b)];
+const DAYS: &[(fn(&str), fn(&str))] = &[
+    (day1::run_a, day1::run_b),
+    (day2::run_a, day2::run_b),
+    (day3::run_a, day3::run_b),
+];
 
 fn run_day(i: usize) -> Result<(), Box<dyn Error>> {
     let (run_a, run_b) = DAYS[i - 1];
