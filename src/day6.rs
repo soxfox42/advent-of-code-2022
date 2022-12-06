@@ -12,4 +12,7 @@ pub fn run_a(input: &str) {
     println!("Marker found at position {}.", chars.windows(4).position(all_unique).unwrap() + 4);
 }
 
-pub fn run_b(_input: &str) {}
+pub fn run_b(input: &str) {
+    let chars: Vec<char> = input.chars().collect();
+    println!("Message found at position {}.", chars.windows(14).position(all_unique).unwrap() + 14);
+}
