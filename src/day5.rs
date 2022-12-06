@@ -3,7 +3,7 @@ use std::num::ParseIntError;
 type Stacks = Vec<Vec<char>>;
 #[derive(Debug)]
 struct Move {
-    count: u64,
+    count: usize,
     src: usize,
     dest: usize,
 }
@@ -62,4 +62,17 @@ pub fn run_a(input: &str) {
     );
 }
 
-pub fn run_b(_input: &str) {}
+pub fn run_b(input: &str) {
+    let (mut stacks, moves) = parse_input(input);
+
+    for Move { count, src, dest } in moves {
+        let idx = stacks[src].len() - count;
+        let substack = stacks[src].split_off(idx);
+        stacks[dest].extend(substack);
+    }
+
+    println!(
+        "Stack tops: {}",
+        stacks.iter().map(|stack| stack.last().unwrap()).collect::<String>()
+    );
+}
