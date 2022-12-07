@@ -4,6 +4,7 @@ mod day3;
 mod day4;
 mod day5;
 mod day6;
+mod day7;
 
 use std::env;
 use std::error::Error;
@@ -16,6 +17,7 @@ const DAYS: &[(fn(&str), fn(&str))] = &[
     (day4::run_a, day4::run_b),
     (day5::run_a, day5::run_b),
     (day6::run_a, day6::run_b),
+    (day7::run_a, day7::run_b),
 ];
 
 fn run_day(i: usize) -> Result<(), Box<dyn Error>> {
