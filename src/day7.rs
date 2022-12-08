@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, iter};
 
 #[derive(Debug)]
 enum Item {
@@ -10,6 +10,13 @@ impl Item {
         match self {
             &Self::File(size) => size,
             &Self::Directory(_, size) => size,
+        }
+    }
+
+    fn is_dir(&self) -> bool {
+        match self {
+            Self::File(_) => false,
+            Self::Directory(_, _) => true,
         }
     }
 
@@ -37,6 +44,17 @@ impl Item {
                     items.values().map(Self::small_dir_sum).sum()
                 }
             }
+        }
+    }
+
+    fn smallest_at_least(&self, min: usize) -> usize {
+        match self {
+            Self::File(_) => 0,
+            Self::Directory(map, size) => iter::once(*size)
+                .chain(map.values().map(|x| x.smallest_at_least(min)))
+                .filter(|&size| size >= min)
+                .min()
+                .unwrap_or(0),
         }
     }
 }
@@ -90,4 +108,8 @@ pub fn run_a(input: &str) {
     );
 }
 
-pub fn run_b(_input: &str) {}
+pub fn run_b(input: &str) {
+    let tree = read_tree(input);
+    let needed = tree.size() - 40000000;
+    println!("Can free up {}", tree.smallest_at_least(needed));
+}
