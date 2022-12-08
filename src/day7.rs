@@ -13,13 +13,6 @@ impl Item {
         }
     }
 
-    fn is_dir(&self) -> bool {
-        match self {
-            Self::File(_) => false,
-            Self::Directory(_, _) => true,
-        }
-    }
-
     fn update_directory_sizes(&mut self) {
         match self {
             Self::File(_) => {
