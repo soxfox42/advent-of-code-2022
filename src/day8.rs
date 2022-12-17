@@ -5,6 +5,60 @@ fn read_grid(input: &str) -> Vec<Vec<u32>> {
         .collect()
 }
 
+fn score_one(trees: &[Vec<u32>], x: usize, y: usize) -> u32 {
+    let here = trees[y][x];
+
+    let mut score = 1;
+
+    let mut dir_score = 0;
+    for x in (0..x).rev() {
+        dir_score += 1;
+        if trees[y][x] >= here {
+            break;
+        }
+    }
+    score *= dir_score;
+    dir_score = 0;
+    for x in (x + 1)..trees[y].len() {
+        dir_score += 1;
+        if trees[y][x] >= here {
+            break;
+        }
+    }
+    score *= dir_score;
+    dir_score = 0;
+    for y in (0..y).rev() {
+        dir_score += 1;
+        if trees[y][x] >= here {
+            break;
+        }
+    }
+    score *= dir_score;
+    dir_score = 0;
+    for y in (y + 1)..trees.len() {
+        dir_score += 1;
+        if trees[y][x] >= here {
+            break;
+        }
+    }
+    score *= dir_score;
+
+    score
+}
+
+fn score(trees: &[Vec<u32>]) -> Vec<Vec<u32>> {
+    let mut scores = Vec::new();
+
+    for y in 0..trees.len() {
+        scores.push(Vec::new());
+        for x in 0..trees[y].len() {
+            scores[y].push(score_one(trees, x, y));
+        }
+    }
+
+    scores
+}
+
 pub fn run_a(input: &str) {
     let trees = read_grid(input);
     let mut visibility = vec![vec![false; trees[0].len()]; trees.len()];
@@ -54,4 +108,8 @@ pub fn run_a(input: &str) {
     );
 }
 
-pub fn run_b(_input: &str) {}
+pub fn run_b(input: &str) {
+    let trees = read_grid(input);
+    let scores = score(&trees);
+    println!("The highest score is {}.", scores.iter().map(|row| row.iter().max().unwrap()).max().unwrap());
+}
