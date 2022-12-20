@@ -99,4 +99,27 @@ pub fn run_a(input: &str) {
     println!("Sum: {sum}");
 }
 
-pub fn run_b(_input: &str) {}
+pub fn run_b(input: &str) {
+    let mut cpu = Cpu::new(
+        input
+            .lines()
+            .map(|line| Instruction::from_str(line).unwrap())
+            .collect(),
+    );
+
+    let mut x_pos = 0;
+    for y in 0..6 {
+        for _ in 0..40 {
+            if (x_pos - cpu.value).abs() <= 1 {
+                print!("#");
+            } else {
+                print!(" ");
+            }
+            cpu.step();
+            x_pos += 1;
+        }
+        x_pos = 0;
+        println!();
+    }
+}
+
