@@ -67,4 +67,27 @@ pub fn run_a(input: &str) {
     println!("Rope tail visted {} positions.", visited.len());
 }
 
-pub fn run_b(_input: &str) {}
+pub fn run_b(input: &str) {
+    let instructions = read_instructions(input);
+    let mut knots = vec![(0, 0); 10];
+
+    let mut visited = HashSet::new();
+    visited.insert(knots[9]);
+
+    for i in instructions {
+        let offset = i.offset();
+        knots[0].0 += offset.0;
+        knots[0].1 += offset.1;
+
+        for i in 0..9 {
+            if (knots[i].0 - knots[i + 1].0).abs() > 1 || (knots[i].1 - knots[i + 1].1).abs() > 1 {
+                knots[i + 1].0 += (knots[i].0 - knots[i + 1].0).signum();
+                knots[i + 1].1 += (knots[i].1 - knots[i + 1].1).signum();
+            }
+        }
+
+        visited.insert(knots[9]);
+    }
+
+    println!("Rope tail visted {} positions.", visited.len());
+}
