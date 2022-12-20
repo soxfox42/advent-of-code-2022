@@ -13,7 +13,10 @@ use std::env;
 use std::error::Error;
 use std::fs;
 
-const DAYS: &[(fn(&str), fn(&str))] = &[
+type Run = fn(&str);
+type Day = (Run, Run);
+
+const DAYS: &[Day] = &[
     (day1::run_a, day1::run_b),
     (day2::run_a, day2::run_b),
     (day3::run_a, day3::run_b),

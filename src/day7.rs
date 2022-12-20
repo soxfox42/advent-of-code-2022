@@ -7,17 +7,15 @@ enum Item {
 }
 impl Item {
     fn size(&self) -> usize {
-        match self {
-            &Self::File(size) => size,
-            &Self::Directory(_, size) => size,
+        match *self {
+            Self::File(size) => size,
+            Self::Directory(_, size) => size,
         }
     }
 
     fn update_directory_sizes(&mut self) {
         match self {
-            Self::File(_) => {
-                return;
-            }
+            Self::File(_) => (),
             Self::Directory(map, size) => {
                 for item in map.values_mut() {
                     item.update_directory_sizes();

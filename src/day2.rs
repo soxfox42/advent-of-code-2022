@@ -28,7 +28,7 @@ enum Outcome {
 }
 
 fn decode_line_a(line: &str) -> (Shape, Shape) {
-    let opponent = match line.chars().nth(0).unwrap() {
+    let opponent = match line.chars().next().unwrap() {
         'A' => Shape::Rock,
         'B' => Shape::Paper,
         'C' => Shape::Scissors,
@@ -45,7 +45,7 @@ fn decode_line_a(line: &str) -> (Shape, Shape) {
 }
 
 fn decode_line_b(line: &str) -> (Shape, Outcome) {
-    let opponent = match line.chars().nth(0).unwrap() {
+    let opponent = match line.chars().next().unwrap() {
         'A' => Shape::Rock,
         'B' => Shape::Paper,
         'C' => Shape::Scissors,

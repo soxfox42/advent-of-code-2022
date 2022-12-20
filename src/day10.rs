@@ -108,7 +108,7 @@ pub fn run_b(input: &str) {
     );
 
     let mut x_pos = 0;
-    for y in 0..6 {
+    for _ in 0..6 {
         for _ in 0..40 {
             if (x_pos - cpu.value).abs() <= 1 {
                 print!("#");
